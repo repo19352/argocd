@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: 	Deployment
+metadata: 
+  name: secert santa
+spec:
+  minReadySeconds: 3
+  replicas: 2
+  selector:
+    matchLabels:
+      app: secretsanta
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%    
+  template:
+    metadata:
+      name: santa
+      labels:
+        app: secretsanta
+    spec:
+      containers:
+        - image: meena835/secretsanta
+          name: cart
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          livenessProbe:
+            tcpSocket: 
+              port: 8080
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"  
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ss
+spec: 
+  type: LoadBalancer
+  selector:
+    app: secretsanta
+  ports:
+    - protocol: TCP
+      port: 35000
+      targetport: 8080                        
