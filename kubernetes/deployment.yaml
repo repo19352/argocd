@@ -146,22 +146,22 @@ spec:
              - "0.1"
              - "--bind_ip"
              - "0.0.0.0"
-        ports:
-          - containerPort: 27017
-        env: 
-          - name: MONGO_INITDB_ROOT_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: mongo-sec
-                key: username
-          - name: MONGO_INITDB_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mongo-sec
-                key: password
-        volumeMounts:
-          - name: mongo-volume
-            mountPath: /data/db 
+          ports:
+            - containerPort: 27017
+          env: 
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-sec
+                  key: username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-sec
+                  key: password
+          volumeMounts:
+            - name: mongo-volume
+              mountPath: /data/db 
       volumes: 
         - name: mongo-volume
           persistentVolumeClaim:
@@ -222,5 +222,8 @@ type: Opaque
 data:  
   password: cGFzc3dvcmQxMjM=   
   username: YWRtaW4=          
+
+
+
 
 
